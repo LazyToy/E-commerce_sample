@@ -1,26 +1,84 @@
+/* 바늘이야기 글로벌 스타일 */
 @import "tailwindcss";
 
+/* CSS 변수 정의 */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-primary: #b08968;
+  --color-primary-dark: #9a7559;
+  --color-primary-light: #c9a68f;
+  --color-beige: #f5ebe0;
+  --color-beige-dark: #dbc9b5;
+  --color-text: #3d3d3d;
+  --color-text-muted: #6b6b6b;
+  --color-background: #fefefe;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* 다크 모드 변수 */
+[data-mantine-color-scheme="dark"] {
+  --color-background: #1a1a1a;
+  --color-text: #e5e5e5;
+  --color-text-muted: #a0a0a0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* 기본 스타일 리셋 - Tailwind Preflight가 margin/padding 리셋을 처리 */
+* {
+  box-sizing: border-box;
 }
 
+html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  max-width: 100vw;
+  overflow-x: hidden;
+  font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+/* 링크 스타일 */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 스크롤바 스타일링 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-beige);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary-light);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
+
+/* 부드러운 스크롤 */
+html {
+  scroll-behavior: smooth;
+}
+
+/* 선택 영역 스타일 */
+::selection {
+  background-color: var(--color-primary-light);
+  color: white;
+}
+
+/* 이미지 기본 스타일 */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* 버튼 포커스 스타일 */
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }

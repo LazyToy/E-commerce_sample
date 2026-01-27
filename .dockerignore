@@ -1,0 +1,25 @@
+# Dependencies
+node_modules
+npm-debug.log
+
+# Next.js
+.next
+out
+
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Environment files (주의: 배포 시 필요한 경우 제외)
+.env*.local
+
+# Misc
+README.md
+.DS_Store
+*.md

@@ -82,6 +82,14 @@ export function ProductDetail({ product }: ProductDetailProps) {
         });
     };
 
+    const handleNotifyRestock = () => {
+        notifications.show({
+            title: '재입고 알림 신청 완료',
+            message: '다음 제작 일정이 잡히면 가장 먼저 알려드릴게요.',
+            color: 'blue',
+        });
+    };
+
     return (
         <Grid gutter="xl">
             {/* 이미지 갤러리 */}
@@ -276,6 +284,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
                                 color="brown"
                                 radius="xl"
                                 mt="sm"
+                                onClick={handleNotifyRestock}
                             >
                                 재입고 알림 신청
                             </Button>

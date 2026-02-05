@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     Container,
     Group,
@@ -13,6 +13,7 @@ import {
     ActionIcon,
     Badge,
     Divider,
+    Menu,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import {
@@ -20,7 +21,9 @@ import {
     IconUser,
     IconSearch,
     IconNeedle,
+    IconLogout,
 } from '@tabler/icons-react';
+import { useSession } from '@/lib/hooks/useSession';
 
 /**
  * 네비게이션 링크 정의
@@ -38,7 +41,38 @@ const navLinks = [
  */
 export function Header() {
     const [opened, { toggle, close }] = useDisclosure(false);
-    const [cartCount] = useState(0); // TODO: 장바구니 상태 연동
+    const [cartCount, setCartCount] = useState(0);
+    const { user, loading } = useSession();
+
+    const handleLogout = async () => {
+        await fetch('/api/auth/logout', { method: 'POST' });
+        window.location.href = '/';
+    };
+
+    useEffect(() => {
+        let active = true;
+
+        const load = async () => {
+            if (!user) {
+                if (active) setCartCount(0);
+                return;
+            }
+            try {
+                const res = await fetch('/api/user/overview');
+                if (!res.ok) return;
+                const data = await res.json();
+                if (active) setCartCount((data.cart || []).length);
+            } catch {
+                if (active) setCartCount(0);
+            }
+        };
+
+        load();
+
+        return () => {
+            active = false;
+        };
+    }, [user]);
 
     return (
         <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100">
@@ -105,16 +139,45 @@ export function Header() {
                         </Link>
 
                         {/* 로그인/마이페이지 */}
-                        <Button
-                            component={Link}
-                            href="/auth/login"
-                            variant="subtle"
-                            color="brown"
-                            leftSection={<IconUser size={18} />}
-                            visibleFrom="sm"
-                        >
-                            로그인
-                        </Button>
+                        {user ? (
+                            <Menu shadow="md" width={200}>
+                                <Menu.Target>
+                                    <Button
+                                        variant="light"
+                                        color="brown"
+                                        leftSection={<IconUser size={18} />}
+                                        visibleFrom="sm"
+                                    >
+                                        {user.name || user.email}
+                                    </Button>
+                                </Menu.Target>
+                                <Menu.Dropdown>
+                                    <Menu.Label>{user.email}</Menu.Label>
+                                    <Menu.Item component={Link} href="/cart">
+                                        장바구니
+                                    </Menu.Item>
+                                    <Menu.Item component={Link} href="/orders">
+                                        주문내역
+                                    </Menu.Item>
+                                    <Menu.Divider />
+                                    <Menu.Item leftSection={<IconLogout size={14} />} onClick={handleLogout} color="red">
+                                        로그아웃
+                                    </Menu.Item>
+                                </Menu.Dropdown>
+                            </Menu>
+                        ) : (
+                            <Button
+                                component={Link}
+                                href="/auth/login"
+                                variant="subtle"
+                                color="brown"
+                                leftSection={<IconUser size={18} />}
+                                visibleFrom="sm"
+                                loading={loading}
+                            >
+                                로그인
+                            </Button>
+                        )}
 
                         {/* 모바일 메뉴 버튼 */}
                         <Burger
@@ -156,16 +219,29 @@ export function Header() {
                         </Link>
                     ))}
                     <Divider my="sm" />
-                    <Button
-                        component={Link}
-                        href="/auth/login"
-                        variant="light"
-                        color="brown"
-                        fullWidth
-                        leftSection={<IconUser size={18} />}
-                    >
-                        로그인
-                    </Button>
+                    {user ? (
+                        <Button
+                            variant="light"
+                            color="brown"
+                            fullWidth
+                            leftSection={<IconUser size={18} />}
+                            onClick={handleLogout}
+                        >
+                            {user.name || user.email} (로그아웃)
+                        </Button>
+                    ) : (
+                        <Button
+                            component={Link}
+                            href="/auth/login"
+                            variant="light"
+                            color="brown"
+                            fullWidth
+                            leftSection={<IconUser size={18} />}
+                            loading={loading}
+                        >
+                            로그인
+                        </Button>
+                    )}
                 </Stack>
             </Drawer>
         </header>

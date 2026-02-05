@@ -1,3 +1,3 @@
 {
-    "terminal.integrated.cwd": "d:\\HY\\develop_Project\\E-commerce_sample\\baneul-iyagi"
+    "terminal.integrated.cwd": "${workspaceFolder}/baneul-iyagi"
 }

@@ -15,8 +15,11 @@ import {
     Menu,
     Modal,
     Stack,
+    NumberInput,
+    Switch,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { notifications } from '@mantine/notifications';
 import {
     IconPlus,
     IconSearch,
@@ -89,7 +92,15 @@ export default function AdminProductsPage() {
     const [search, setSearch] = useState('');
     const [deleteOpened, { open: openDelete, close: closeDelete }] =
         useDisclosure(false);
+    const [createOpened, { open: openCreate, close: closeCreate }] =
+        useDisclosure(false);
     const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
+    const [newProduct, setNewProduct] = useState({
+        name: '',
+        price: 0,
+        category: '',
+        isLimited: false,
+    });
 
     const filteredProducts = products.filter((p) =>
         p.name.toLowerCase().includes(search.toLowerCase())
@@ -98,6 +109,26 @@ export default function AdminProductsPage() {
     const handleDelete = (id: string) => {
         setSelectedProduct(id);
         openDelete();
+    };
+
+    const handleSaveNewProduct = () => {
+        notifications.show({
+            title: '제품 등록 완료',
+            message: `${newProduct.name || '새 제품'}이(가) 임시로 등록되었습니다 (데모).`,
+            color: 'green',
+        });
+        setNewProduct({ name: '', price: 0, category: '', isLimited: false });
+        closeCreate();
+    };
+
+    const handleConfirmDelete = () => {
+        notifications.show({
+            title: '삭제 처리',
+            message: selectedProduct ? `${selectedProduct} 삭제 처리 (데모)` : '선택된 제품 없음',
+            color: 'red',
+        });
+        closeDelete();
+        setSelectedProduct(null);
     };
 
     return (
@@ -114,6 +145,7 @@ export default function AdminProductsPage() {
                     leftSection={<IconPlus size={18} />}
                     color="brown"
                     radius="lg"
+                    onClick={openCreate}
                 >
                     제품 등록
                 </Button>
@@ -242,8 +274,47 @@ export default function AdminProductsPage() {
                         <Button variant="light" onClick={closeDelete}>
                             취소
                         </Button>
-                        <Button color="red" onClick={closeDelete}>
+                        <Button color="red" onClick={handleConfirmDelete}>
                             삭제
+                        </Button>
+                    </Group>
+                </Stack>
+            </Modal>
+
+            {/* 제품 등록 모달 */}
+            <Modal opened={createOpened} onClose={closeCreate} title="제품 등록" centered>
+                <Stack gap="md">
+                    <TextInput
+                        label="제품명"
+                        placeholder="예) 핸드메이드 체크 토트백"
+                        value={newProduct.name}
+                        onChange={(e) => setNewProduct((p) => ({ ...p, name: e.currentTarget.value }))}
+                    />
+                    <TextInput
+                        label="카테고리"
+                        placeholder="가방 / 파우치 / 소품"
+                        value={newProduct.category}
+                        onChange={(e) => setNewProduct((p) => ({ ...p, category: e.currentTarget.value }))}
+                    />
+                    <NumberInput
+                        label="가격"
+                        placeholder="숫자만 입력"
+                        value={newProduct.price}
+                        onChange={(v) => setNewProduct((p) => ({ ...p, price: Number(v) || 0 }))}
+                        min={0}
+                        thousandSeparator="," 
+                    />
+                    <Switch
+                        label="한정판 여부"
+                        checked={newProduct.isLimited}
+                        onChange={(e) => setNewProduct((p) => ({ ...p, isLimited: e.currentTarget.checked }))}
+                    />
+                    <Group justify="flex-end" gap="sm">
+                        <Button variant="light" onClick={closeCreate}>
+                            취소
+                        </Button>
+                        <Button color="brown" onClick={handleSaveNewProduct}>
+                            저장
                         </Button>
                     </Group>
                 </Stack>

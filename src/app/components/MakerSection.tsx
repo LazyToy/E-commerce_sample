@@ -96,9 +96,9 @@ export function MakerSection() {
                             <Group gap="sm" align="flex-start">
                                 <IconQuote size={24} className="text-[#b08968] flex-shrink-0" />
                                 <Text size="lg" className="italic leading-relaxed text-gray-700">
-                                    "빠르게 만들지 않습니다.
+                                    &ldquo;빠르게 만들지 않습니다.
                                     <br />
-                                    오래 사용될 것을 만듭니다."
+                                    오래 사용될 것을 만듭니다.&rdquo;
                                 </Text>
                             </Group>
                         </Card>

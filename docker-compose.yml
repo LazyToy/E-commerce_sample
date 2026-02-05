@@ -1,15 +1,35 @@
 services:
+
   baneul-iyagi:
+
     build:
+
       context: .
+
       dockerfile: Dockerfile
+
+    # [추가] 컨테이너 내부 프로세스가 좀비가 되는 것을 방지
+
+    init: true
+
     ports:
+
       - "3000:3000"
+
     restart: unless-stopped
+
     environment:
+
       - NODE_ENV=production
+
     healthcheck:
-      test: [ "CMD", "wget", "-q", "--spider", "http://localhost:3000" ]
+
+      # alpine 환경에서도 안정적으로 동작하도록 CMD-SHELL 사용
+
+      test: ["CMD-SHELL", "nc -z localhost 3000 || exit 1"]
+
       interval: 30s
+
       timeout: 10s
+
       retries: 3

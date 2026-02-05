@@ -13,35 +13,27 @@ const getProduct = (id: string) => {
     const products = [
         {
             id: '1',
-            name: '린넨 토트백 - 내츄럴',
-            description: `프리미엄 이탈리아산 린넨으로 제작된 토트백입니다.
+            name: '핸드메이드 입체 인형 체크 토트백',
+            description: `입체 인형 아플리케로 완성한, 빈티지 체크 데일리 토트백입니다.
+한 땀 한 땀 정성스럽게 만든 포인트 토트로, 체크 원단의 차분한 무드에 컬러 플라워 스커트와 리본 디테일로 가볍게 들어도 룩이 살아나는 아이템이에요.
 
-자연스러운 질감과 내구성이 뛰어나며, 사용할수록 부드러워지는 특성이 있습니다.
-넉넉한 수납공간으로 일상과 여행 모두에 활용하기 좋습니다.
-
-**소재 정보**
-- 겉감: 이탈리아산 린넨 100%
-- 안감: 면 100%
-- 손잡이: 식물성 가죽
-
-**사이즈**
-- 가로: 40cm
-- 세로: 35cm
-- 폭: 15cm
-- 손잡이 길이: 55cm`,
-            price: 189000,
-            originalPrice: 210000,
+**구매 포인트**
+1. 한눈에 포인트: 입체 인형 아플리케가 심플한 코디도 한 번에 포인트가 되어줍니다.
+2. 탄탄한 원단감: 클래식한 결 + 퀼팅감 있는 볼륨으로 힘 있게 형태를 유지합니다.
+3. 매일 들기 좋은 무드: 사계절 어느 룩에나 잘 어울리는 빈티지·프레피 무드입니다.`,
+            price: 68000,
+            originalPrice: 75000,
             images: [
                 '/images/placeholder-bag-1.jpg',
                 '/images/placeholder-bag-1-2.jpg',
                 '/images/placeholder-bag-1-3.jpg',
             ],
             category: '토트백',
-            stockQuantity: 2,
-            maxQuantity: 5,
+            stockQuantity: 5,
+            maxQuantity: 20,
             isLimited: true,
-            productionDays: 7,
-            makerNote: '이번 가방은 특히 모서리 박음질에 신경 썼어요. 20년 경력으로도 한 땀 한 땀이 긴장되는 작업이었습니다.',
+            productionDays: 5,
+            makerNote: '인형의 헤어와 리본 디테일 하나하나 손으로 매만져 입체감을 살렸습니다. 핸드메이드만의 따뜻한 감성을 느껴보세요.',
         },
     ];
 
